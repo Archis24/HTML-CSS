@@ -2,7 +2,7 @@
 from flask import Flask, render_template, request, redirect
 # Importamos la herramienta para trabajar con bases de datos
 from flask_sqlalchemy import SQLAlchemy
-
+from audio import speech 
 # Creamos nuestra aplicación web
 app = Flask(__name__)
 # Le decimos a nuestra aplicación que usaremos una base de datos llamada 'diary.db'
@@ -110,7 +110,15 @@ def form_create():
         return redirect('/index')
     else:
         return render_template('create_card.html')
+    
+@app.route('/voice')
+def voices():
+    try:
+        text = speech()
+    except:
+        text = 'Error al grabar el audio'
+    return render_template('create_card.html', text=text)
+ 
 
-# Iniciamos nuestra aplicación web
 if __name__ == "__main__":
     app.run(debug=True)
